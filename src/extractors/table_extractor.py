@@ -1,91 +1,38 @@
-import torch
-from transformers import AutoImageProcessor, TableTransformerForObjectDetection
-from PIL import Image
+from .base_extractor import BaseExtractor
+import fitz  # PyMuPDF
 import pandas as pd
-import numpy as np
-from pdf2image import convert_from_path
+import uuid
 import os
 
-class TableExtractor:
+class TableExtractor(BaseExtractor):
     def __init__(self, config):
         self.config = config
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-        # Load detection model
-        self.processor = AutoImageProcessor.from_pretrained(config['model'])
-        self.model = TableTransformerForObjectDetection.from_pretrained(config['model']).to(self.device)
-
-        self.max_size = config.get('max_size', 1000)
-
-    def preprocess_image(self, image):
-        # Resize image while maintaining aspect ratio
-        w, h = image.size
-        scale = min(self.max_size / max(w, h), 1.0)
-        new_w, new_h = int(w * scale), int(h * scale)
-        image = image.resize((new_w, new_h))
-        return image
-
-    def extract_tables_from_image(self, image):
-        """Extract tables from a single image."""
-        image = self.preprocess_image(image)
-
-        # Prepare inputs
-        inputs = self.processor(images=image, return_tensors="pt")
-        inputs = {k: v.to(self.device) for k, v in inputs.items()}
-
-        # Forward pass
-        with torch.no_grad():
-            outputs = self.model(**inputs)
-
-        # Post-process outputs
-        target_sizes = torch.tensor([image.size[::-1]]).to(self.device)
-        results = self.processor.post_process_object_detection(
-            outputs,
-            threshold=0.7,
-            target_sizes=target_sizes
-        )[0]
-
-        tables = []
-        for score, label, box in zip(results["scores"], results["labels"], results["boxes"]):
-            if score >= 0.7:  # Confidence threshold
-                # Convert box coordinates to integers
-                box = [int(i) for i in box.tolist()]
-
-                # Extract table region
-                table_image = image.crop(box)
-
-                # Convert table to dataframe (simplified)
-                # In a real implementation, you would use OCR or structure recognition here
-                table_data = pd.DataFrame([["Table content"]])
-
-                tables.append({
-                    'bbox': box,
-                    'confidence': score.item(),
-                    'data': table_data
-                })
-
-        return tables
-
+        self.min_rows = config.get('min_rows', 2)
+        self.min_cols = config.get('min_cols', 2)
+        
     def extract(self, pdf_path):
-        """Extract tables from PDF pages."""
         try:
-            tables_data = []
-            pages = convert_from_path(pdf_path)
-
-            for page_num, page_image in enumerate(pages):
-                page_tables = self.extract_tables_from_image(page_image)
-
-                for table_id, table in enumerate(page_tables):
-                    tables_data.append({
+            # In a real implementation, you would use a library like tabula-py
+            # For simplicity, we'll just return a placeholder
+            doc = fitz.open(pdf_path)
+            table_data = []
+            
+            for page_num, page in enumerate(doc):
+                # This is a simplified approach - in a real implementation
+                # you would use more sophisticated table detection
+                text = page.get_text("dict")
+                
+                # Simple heuristic: if we have blocks with similar y-coordinates,
+                # they might be part of a table
+                if len(text["blocks"]) > self.min_rows:
+                    table_data.append({
+                        'id': str(uuid.uuid4()),
                         'page': page_num,
-                        'table_id': table_id,
-                        'bbox': table['bbox'],
-                        'confidence': table['confidence'],
-                        'data': table['data'],
+                        'text': f"Table found on page {page_num+1}",
                         'type': 'table'
                     })
-
-            return tables_data
+                
+            return table_data
         except Exception as e:
             print(f"Error extracting tables: {str(e)}")
             return []

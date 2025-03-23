@@ -1,34 +1,32 @@
-extractors:
-  text:
-    model: "tesseract"
-    language: "eng"
-    tesseract_path: "/usr/bin/tesseract"  # Update for your system
-  table:
-    model: "microsoft/table-transformer-detection"
-    structure_model: "microsoft/table-transformer-structure-recognition"
-    max_size: 1000
-  image:
-    model: "openai/clip-vit-base-patch32"
-    confidence_threshold: 0.5
-
-embedders:
-  text:
-    model: "sentence-transformers/all-mpnet-base-v2"
-    dimension: 768
-  table:
-    model: "microsoft/tapas-base"
-    dimension: 768
-  image:
-    model: "openai/clip-vit-base-patch32"
-    dimension: 512
-
-vector_store:
-  type: "milvus"
-  host: "localhost"
-  port: 19530
-  collection_prefix: "rag_"
-
+# API Configuration
 api:
   host: "0.0.0.0"
   port: 8000
-  debug: true
+
+# Extractor Configuration
+extractors:
+  text:
+    chunk_size: 1000
+    chunk_overlap: 200
+  table:
+    enabled: true
+  image:
+    enabled: true
+    min_size: 100  # Minimum size in pixels to consider
+
+# Embedder Configuration
+embedders:
+  text:
+    model: "all-MiniLM-L6-v2"
+    dimension: 384
+  table:
+    model: "all-MiniLM-L6-v2"
+    dimension: 384
+  image:
+    model: "clip-ViT-B-32"
+    dimension: 512
+
+# Vector Store Configuration
+vector_store:
+  collection_prefix: "rag_"
+  similarity_threshold: 0.7
