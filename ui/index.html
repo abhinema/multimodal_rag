@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multimodal RAG System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Multimodal RAG System</h1>
+        
+        <div class="upload-section">
+            <h2>Upload Documents</h2>
+            <div class="upload-area" id="drop-area">
+                <p>Drag & drop PDF files here or</p>
+                <input type="file" id="fileInput" accept=".pdf" multiple>
+                <label for="fileInput" class="upload-btn">Browse Files</label>
+            </div>
+            <div id="file-list" class="file-list"></div>
+            <button id="upload-btn" class="primary-btn" disabled>Process Documents</button>
+        </div>
+        
+        <div class="query-section">
+            <h2>Ask Questions</h2>
+            <textarea id="query-input" placeholder="Enter your question here..."></textarea>
+            <button id="query-btn" class="primary-btn">Submit Question</button>
+        </div>
+        
+        <div class="results-section">
+            <h2>Results</h2>
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+                <p>Processing...</p>
+            </div>
+            <div id="results-container" class="results-container"></div>
+        </div>
+    </div>
+    
+    <script src="scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+:root {
+    --primary-color: #4a6fa5;
+    --secondary-color: #166088;
+    --accent-color: #9ba4b4;
+    --light-color: #f1f1f1;
+    --dark-color: #333;
+    --error-color: #d9534f;
+    --success-color: #5cb85c;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--dark-color);
+    background-color: var(--light-color);
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--secondary-color);
+}
+
+h2 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+.upload-section, .query-section, .results-section {
+    margin-bottom: 40px;
+}
+
+.upload-area {
+    border: 2px dashed var(--accent-color);
+    border-radius: 5px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 20px;
+}
+
+.upload-area:hover, .upload-area.active {
+    border-color: var(--primary-color);
+    background-color: rgba(155, 164, 180, 0.1);
+}
+
+.upload-area p {
+    margin-bottom: 15px;
+    color: var(--dark-color);
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.upload-btn {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.upload-btn:hover {
+    background-color: var(--secondary-color);
+}
+
+.file-list {
+    margin-bottom: 20px;
+}
+
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: var(--light-color);
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.file-name {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.remove-file {
+    color: var(--error-color);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.primary-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+.primary-btn:hover {
+    background-color: var(--secondary-color);
+}
+
+.primary-btn:disabled {
+    background-color: var(--accent-color);
+    cursor: not-allowed;
+}
+
+textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid var(--accent-color);
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    min-height: 100px;
+    resize: vertical;
+}
+
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid var(--light-color);
+    border-top: 5px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.hidden {
+    display: none;
+}
+
+.results-container {
+    background-color: var(--light-color);
+    padding: 20px;
+    border-radius: 5px;
+    min-height: 100px;
+}
+
+.result-item {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.result-text {
+    margin-bottom: 10px;
+}
+
+.result-meta {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.error-message {
+    color: var(--error-color);
+    padding: 10px;
+    background-color: rgba(217, 83, 79, 0.1);
+    border-left: 3px solid var(--error-color);
+    margin-bottom: 15px;
+}
+
+.success-message {
+    color: var(--success-color);
+    padding: 10px;
+    background-color: rgba(92, 184, 92, 0.1);
+    border-left: 3px solid var(--success-color);
+    margin-bottom: 15px;
+}

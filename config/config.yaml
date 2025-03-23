@@ -1,0 +1,34 @@
+extractors:
+  text:
+    model: "tesseract"
+    language: "eng"
+    tesseract_path: "/usr/bin/tesseract"  # Update for your system
+  table:
+    model: "microsoft/table-transformer-detection"
+    structure_model: "microsoft/table-transformer-structure-recognition"
+    max_size: 1000
+  image:
+    model: "openai/clip-vit-base-patch32"
+    confidence_threshold: 0.5
+
+embedders:
+  text:
+    model: "sentence-transformers/all-mpnet-base-v2"
+    dimension: 768
+  table:
+    model: "microsoft/tapas-base"
+    dimension: 768
+  image:
+    model: "openai/clip-vit-base-patch32"
+    dimension: 512
+
+vector_store:
+  type: "milvus"
+  host: "localhost"
+  port: 19530
+  collection_prefix: "rag_"
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  debug: true

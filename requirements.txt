@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+python-multipart
+pytesseract
+pdf2image
+numpy
+pandas
+torch
+transformers
+timm
+sentence-transformers
+clip
+pymilvus
+pyyaml
+python-dotenv
+Pillow
